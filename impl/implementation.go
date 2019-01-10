@@ -31,7 +31,7 @@ type cdMap map[string]implementation.ComponentDefinition
 //GenerateImplementation generates implementation from component excel sheet
 func GenerateImplementation(CSVS [][]string, p *profile.Profile, c Catalog) implementation.Implementation {
 
-	ComponentDefinitonMap := make(map[string]implementation.ComponentDefinition)
+	componentDefinitonMap := make(map[string]implementation.ComponentDefinition)
 	checkAgainstGUID := make(map[string]uuid.UUID)
 
 	for i := RowIndex; i < TotalControlsInExcel; i++ {
@@ -46,18 +46,18 @@ func GenerateImplementation(CSVS [][]string, p *profile.Profile, c Catalog) impl
 			if componentConfigName == "" {
 				continue
 			}
-			if _, ok := ComponentDefinitonMap[componentConfigName]; !ok {
+			if _, ok := componentDefinitonMap[componentConfigName]; !ok {
 				guid := strings.Split(CSVS[i][UUIDIndex], delimiter)[compIndex]
 				guid = strings.TrimSpace(guid)
-				CreateComponentDefinition(checkAgainstGUID, ComponentDefinitonMap, componentConfigName, p, c, applicableControl, applicableNarrative, guid)
+				CreateComponentDefinition(checkAgainstGUID, componentDefinitonMap, componentConfigName, p, c, applicableControl, applicableNarrative, guid)
 			} else {
-				securityCheck := ComponentDefinitonMap[componentConfigName]
+				securityCheck := componentDefinitonMap[componentConfigName]
 				guid := checkAgainstGUID[componentConfigName]
-				ComponentDefinitonMap[componentConfigName] = AppendParameterInImplementation(securityCheck, guid, p, c, applicableControl)
+				componentDefinitonMap[componentConfigName] = AppendParameterInImplementation(securityCheck, guid, p, c, applicableControl)
 			}
 		}
 	}
-	return CompileImplemenatation(ComponentDefinitonMap, CSVS, c, p)
+	return CompileImplemenatation(componentDefinitonMap, CSVS, c, p)
 
 }
 
