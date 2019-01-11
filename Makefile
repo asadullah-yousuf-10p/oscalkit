@@ -29,7 +29,7 @@ generate:
 		sh -c "go generate"
 
 test:
-	@go test -race -coverprofile=coverage.txt -covermode=atomic -v $(shell go list ./... | grep -v /vendor/)
+	@go test -race -coverprofile=coverage.txt -covermode=atomic -v $(shell go list ./... | grep -v '/vendor/\|/test_util')
 
 build-docker:
 	docker image build --build-arg VERSION=$(VERSION) --build-arg BUILD=$(BUILD) --build-arg DATE=$(DATE) -t $(NAMESPACE)/$(REPO):$(VERSION)-$(BUILD) .
